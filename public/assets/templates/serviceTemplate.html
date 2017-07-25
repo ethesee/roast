@@ -1,0 +1,59 @@
+
+<div class="leftpart">
+    <input type="checkbox" value="1" name="<%=title%>" />
+</div>
+<% if (image === ''){ %>
+    <div class="rightpart">
+        <summary>
+            <%=title%><span>$<%=price%></span>
+        </summary>
+    </div>
+<%}else{%>
+<style>
+    .module<%=_id%> {
+      margin: 10px;
+      width: 230px;
+      height: 150px;
+      float: left;
+      background: url("uploads/<%=image%>");
+      background-size: cover;
+      position: relative;
+    }
+
+    .module<%=_id%> h2 {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 4px 8px;
+      color: white;
+      margin: 0;
+      font: 14px Sans-Serif;
+    }
+
+    .opp h2 {
+      background: rgba(255, 255, 255, 0.75);
+      color: black;
+    }
+</style>
+    <div class="rightpart">
+        <summary>
+            <%=title%><span>$<%=price%></span>
+        </summary>
+        <details>
+            <summary>
+                Click here for more info ... 
+            </summary>
+            	<p>
+                    <div class="module<%=_id%> opp">
+                      <h2><%=title%> is: <%=price%></h2>
+                    </div>
+                    <!--div class="image">
+                        <img class="screenshot" src="uploads/<%=image%>" width="150" height="150">
+                        <h2><span><%=title%>:<span class=spacer><%=price%></span></span></h2>
+                    </div-->
+                <p>
+        </details>
+    </div>
+<%}%>
+<div style="clear:both; font-size:1px;"></div>
