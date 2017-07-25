@@ -34,12 +34,23 @@ define([
 		setIterator: function(id){
 			this.idIterator = id;
 		},
-		renderFirst: function(){
-			var service = _.first(this.services.models);
-			var id = service.get("_id");
-			var view = new ServiceView({ model: service });
-			this.memoizer[id] = 1;
-			this.list.append(view.render().el);
+		firstRender: function(){
+			this.services.each(function(service){
+				var id = service.get("_id");
+				if ( ! (id in this.memoizer) ){
+					this.memoizer[id] = 0;
+					if ( ! this.loaded ){
+						minKey = id;
+						minVal = 1;
+						this.memoizer[id] = 1;
+						var view = new ServiceView({ model: service });
+						this.list.append(view.render().el);
+						this.loaded = true;
+					}
+					
+				}
+				 
+			}, this);	// "this" is the context in the callback
 		},
 		createServiceViews: function(){
 			console.log("createServiceViews called")
@@ -62,24 +73,13 @@ define([
 					var unusedServices = _.filter(this.services.models,function(model){
 						return model.get("_id") !== usedKey;
 					});
-					var maxKey = key,
-						maxVal=0;
-					for(var i in this.memoizer){
-						var val = this.memoizer[i];
-						if ( val > maxVal){
-							maxVal = val;
-							maxKey = i;
-						}
-					}
-					var minKey = maxKey,
-						minVal = maxVal;
-					for(var i in this.memoizer){
-						var val = this.memoizer[i];
-						if ( val < minVal){
-							minVal = val;
-							minKey = i;
-						}
-					}
+					
+					var memory = this.memoizer;
+					//find the key used the least.
+					var minKey = Object.keys(memory).reduce(function(a, b){ 
+								return memory[a] < memory[b] ? a : b 
+							});
+
 					service = _.first(_.filter(unusedServices,function(s){
 						return s.get("_id") == minKey;
 					}));
@@ -96,23 +96,8 @@ define([
 				this.list.append(view.render().el);
 				this.memoizer[id] += 1;
 			}else{
-				this.services.each(function(service){
-					var id = service.get("_id"),
-						view = new ServiceView({ model: service });
-
-					if ( ! (id in this.memoizer) ){
-						this.memoizer[id] = 0;
-						if ( ! this.loaded ){
-							minKey = id;
-							minVal = 1;
-							this.memoizer[id] = 1;
-							this.list.append(view.render().el);
-							this.loaded = true;
-						}
-						
-					}
-					 
-				}, this);	// "this" is the context in the callback
+				this.firstRender();
+				
 			}
 
 
