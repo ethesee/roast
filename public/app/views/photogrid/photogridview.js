@@ -52,19 +52,8 @@ define([
 				 
 			}, this);	// "this" is the context in the callback
 		},
-		createServiceViews: function(){
-			console.log("createServiceViews called")
-			this.list.empty();
-			this.total = $('#total span');
-			var showNext = false;
-			
-			//var rendered = false;
-			var minKey,
-				minVal;
-
-			var memKeys = _.keys(this.memoizer);
+		otherRender: function(memKeys){
 			 
-
 			if (memKeys.length > 0 && this.loaded ){
 				var key = _.first(memKeys);
 				var service;
@@ -95,14 +84,25 @@ define([
 				var id = service.get("_id");
 				this.list.append(view.render().el);
 				this.memoizer[id] += 1;
+			}
+		},
+
+		createServiceViews: function(){
+			
+			this.list.empty();
+			this.total = $('#total span');
+			var showNext = false;
+			
+			var memKeys = _.keys(this.memoizer);
+			 
+
+			if (memKeys.length > 0 && this.loaded ){
+				this.otherRender(memKeys);
 			}else{
 				this.firstRender();
 				
 			}
 
-
-			 
-			
 			// this.services.each(function(service){
 			// 	var view = new ServiceView({ model: service });
 			// 	if ( this.idIterator === ""){
