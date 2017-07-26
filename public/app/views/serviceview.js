@@ -37,7 +37,7 @@ define([
 		},
 		selectThumb: function(e){
 			e.preventDefault();
-			console.log("clicked on image: + " + this.model.get('title'))
+			//console.log("clicked on image: + " + this.model.get('title'))
 			//sapp.router.navigate('/:' + this.model.get('id'),true);
 			sapp.router.navigate('Home', true);
 		},
@@ -51,7 +51,7 @@ define([
 		},
 		swipeLeft: function(e){
 			e.preventDefault();
-			console.log("swipeLeft:" + this.model.get("_id"));
+			//console.log("swipeLeft:" + this.model.get("_id"));
 			dispatcher.trigger("page",{direction: "left", id: this.model.get("_id")});
 		}
 	});

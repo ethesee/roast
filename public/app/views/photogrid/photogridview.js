@@ -22,9 +22,16 @@ define([
 		initialize: function(options){
 			// this.router = options.router;
 			this.services = options.collection;
-			this.services.on("reset", this.render, this);
-			this.services.fetch({reset: true});
-	        //this.render();
+			//this.services.on("reset", this.render, this);
+			this.fetchPromise = this.services.fetch({reset: true});
+			this.fetchPromise.done(_.bind(function(){
+				//collection is loaded/populated from db. Ready to show
+				setTimeout(_.bind(function(){
+					this.createServiceViews();
+				},this),2000);
+				
+			},this));
+	        this.render();
 			//this.listenTo(this.services, 'change', this.render);
 			//this.listenTo(this.services, 'add', this.render);
 			
@@ -103,42 +110,33 @@ define([
 				
 			}
 
-			// this.services.each(function(service){
-			// 	var view = new ServiceView({ model: service });
-			// 	if ( this.idIterator === ""){
-			// 		this.idIterator = service.get("_id");
-			// 		//this.list.append(view.render().el);
-			// 	}else if ( this.idIterator === service.get("_id") ){
-			// 		showNext = true;
-			// 	}else if ( showNext ){
-			// 		this.list.append(view.render().el);
-			// 		showNext = false;
-			// 	}
-				
-			// }, this);	// "this" is the context in the callback
+			
 		},
-
+		showBar: function(){
+			var progressDiv = $('<div class="progress"></div>');
+			progressDiv.appendTo(this.list);
+			var totalWidth = 400;
+			var intval = setInterval(function(){
+				var currentWidth = parseInt(progressDiv.width(),10) + 20;
+				progressDiv.css({width: currentWidth + "px"});
+				if ( currentWidth == totalWidth){
+					clearInterval(intval);		
+				}
+			},100);
+		},
 		render: function(){
 			
 			this.template = _.template(photoGridTemplate);
 			this.$el.html(this.template());
 			this.list = $('#services');
 			
-			this.createServiceViews();
 			
-			// Calculate the total order amount by agregating
-			// the prices of only the checked elements
-			
-			// var total = 0;
-
-			// _.each(this.services.getChecked(), function(elem){
-			// 	var price = parseFloat(elem.get('price'));
-			// 	total += ( typeof price !== 'undefined') ? price : 0;
-			// });
-			
-			// total = Utils.roundToTwo(total);
-			// // Update the total price
-			// this.total.text('$'+total);
+			if (this.loaded) {
+				this.createServiceViews();
+			}else{
+				console.log("showbar will execute")
+				this.showBar();
+			}
             
 			return this;
 
@@ -152,7 +150,7 @@ define([
 			//'click #addService': "addService"
 		},
 		pageService: function(s){
-			console.log("pageService called:", s);
+			//console.log("pageService called:", s);
 			this.setIterator(s.id);
 			this.render();
 		},
@@ -160,13 +158,6 @@ define([
 		    		
 		    console.log("addService called")
 			var stitle = s.title, sprice = Utils.roundToTwo(parseFloat(s.price));
-
-			// if ( s.get('image') ){
-			// 	//with image
-			// 	this.services.create({ title: stitle, price: sprice, checked: false, image: s.get('image')});
-			// }else{
-			// 	this.services.create({ title: stitle, price: sprice, checked: false});
-			// }
 
 			if ( s.image ){
 				//with image
@@ -181,7 +172,7 @@ define([
 			
 			
 			//this.router.navigate();
-			Sapp.router.navigate('Home', true);
+			Sapp.router.navigate('/', true);
 			
 		},
 
