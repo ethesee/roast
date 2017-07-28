@@ -17,6 +17,7 @@ define([
 			//'click' : 'selectThumb',
 			'click #swipe-right': "swipeRight",
 			'click #swipe-left': "swipeLeft",
+			'click #replylink': "handleReply"
 		},
 
 		initialize: function(){
@@ -44,7 +45,19 @@ define([
 		toggleService: function(e){	
 			this.model.toggle();			
 		},
-		swipeRight: function(e){
+		handleReply: function(e){
+			console.log("handleReply")
+			var parent = $( "#replylink" ).parent();
+			parent.empty();
+			parent.html("<textarea id='roast" + this.model.get("_id") + "'></textarea>");
+			$("#roast" + this.model.get("_id")).keypress(_.bind(function(e){
+				if (e.which == 13) {
+					console.log("saving:" + $("#roast" + this.model.get("_id")).val());
+				}
+			},this))
+			 
+		},
+		swipeRight: function(e){replylink
 			e.preventDefault();
 			//console.log("swipeRight:" + this.model.get("_id"));
 			dispatcher.trigger("page",{direction: "right", id: this.model.get("_id")});

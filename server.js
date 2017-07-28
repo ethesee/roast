@@ -35,7 +35,8 @@ app.get('/api', function(req, res){
 });
 
 //Connect to database
-mongoose.connect('mongodb://localhost/amd_database');
+//mongoose.connect('mongodb://localhost/amd_database');
+ mongoose.connect('mongodb://localhost/roast_database');
 
 //Schemas
 // var Keywords = new mongoose.Schema({
@@ -48,7 +49,8 @@ var Service = new  mongoose.Schema({
     title:String,
     price:String,
     checked: Boolean,
-    image:String
+    image:String,
+    roasts: [{relation: String, id: String, roast: String, author: String, posted: Date}],
 });
  
 //Models

@@ -11,7 +11,8 @@ define([
 				title: 'My service',
 				price: 100,
 				checked: false,
-				image: ''	
+				image: '',
+				roasts: []	
 			},
 			idAttribute: "_id",
 			parse:function (response) {
