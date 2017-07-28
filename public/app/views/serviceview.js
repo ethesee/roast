@@ -49,11 +49,12 @@ define([
 			console.log("handleReply")
 			var parent = $( "#replylink" ).parent();
 			parent.empty();
-			parent.html("<textarea id='roast" + this.model.get("_id") + "'></textarea>");
-			$("#roast" + this.model.get("_id")).keypress(_.bind(function(e){
-				if (e.which == 13) {
-					console.log("saving:" + $("#roast" + this.model.get("_id")).val());
-				}
+			parent.html("<textarea class='texta roast" + this.model.get("_id") + "'></textarea>" +
+					'<p><a class="blueface roastlink' + this.model.get("_id") + '" href="#">post</a></p>');
+			$(".roastlink" + this.model.get("_id")).click(_.bind(function(e){
+				var tcomponent = $(".roast" + this.model.get("_id"));
+				console.log("saving:" + tcomponent.val());
+				tcomponent.val('');
 			},this))
 			 
 		},

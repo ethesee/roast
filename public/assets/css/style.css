@@ -425,3 +425,26 @@ footer h2 i{
 	vertical-align: middle;
 	line-height: 40px;
 }
+
+.texta {
+        border: 1px #ddd solid;
+        width: 400px;
+        height: 60px;
+        font: 9pt Consolas;
+        resize: none;
+}
+
+a.blueface:link{
+    -moz-user-select: none;
+    background: #2A49A5;
+    border: 1px solid #082783;
+    box-shadow: 0 1px #4C6BC7 inset;
+    color: white;
+    padding: 3px 5px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 #082783;
+    font: 12px Verdana, sans-serif;
+    float:right;
+}
+
+
