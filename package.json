@@ -1,0 +1,14 @@
+{
+   
+    "name": "roast", 
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+      "express": "2.5.8",
+      "mongoose": "4.1.12",
+      "fs-extra": "latest",
+      "multer": "latest",
+      "formidable": "latest",
+      "jade": ">= 0.26.1"
+    }
+}
